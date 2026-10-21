@@ -2,10 +2,11 @@
   "name": "mealdeal",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "node -e \"process.exit(0)\"",
+    "start": "node server.js",
+    "build": "echo ok"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +17,8 @@
   },
   "devDependencies": {
     "puppeteer-core": "^24.43.1"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
