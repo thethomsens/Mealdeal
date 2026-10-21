@@ -19,7 +19,7 @@ let near='Salt Lake City, UT';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function filtered(){let d=deals.map(x=>({...x,mi:x.lat?km(loc,[x.lat,x.lng])*0.621:null,vpd:x.nodeal?-1:(x.items||1)/x.price}));
  const near=new Set(d.filter(x=>x.mi!=null&&x.mi<=15&&!/^Participating/.test(x.address)).map(x=>x.restaurant+'|'+x.deal));d=d.filter(x=>!(/^Participating/.test(x.address)&&near.has(x.restaurant+'|'+x.deal)));
- if($('vonly').checked)d=d.filter(x=>x.verified);
+ d=d.filter(x=>x.verified);
  if(mode==='cheap')d=d.filter(x=>(x.items||1)>=3||x.category!=='combo'||x.price>=5); // "full meal": skip 2-item snack combos
  if(mode==='crave')d=d.filter(x=>craveMatch(x,crave));
  const dist=x=>x.mi??99,tier=x=>{const m=dist(x);return m<=15?0:m<=30?1:2},nd=(a,b)=>(a.nodeal?1:0)-(b.nodeal?1:0);const by=mode==='crave'?(sub==='cheap'?'cheap':'value'):mode;
@@ -34,7 +34,7 @@ function setMode(m){mode=m;$('m-cheap').classList.toggle('on',m==='cheap');$('m-
 $('m-cheap').onclick=()=>setMode('cheap');$('m-value').onclick=()=>setMode('value');$('m-crave').onclick=()=>{setMode('crave');$('crave').focus()};
 $('crave').oninput=e=>{crave=e.target.value;$('pick').innerHTML='';render()};
 document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{crave=$('crave').value=b.dataset.c;$('pick').innerHTML='';render()});
-const setSub=v=>{sub=v;$('s-value').classList.toggle('on',v==='value');$('s-cheap').classList.toggle('on',v==='cheap');render()};$('s-value').onclick=()=>setSub('value');$('s-cheap').onclick=()=>setSub('cheap');$('vonly').onchange=render;
+const setSub=v=>{sub=v;$('s-value').classList.toggle('on',v==='value');$('s-cheap').classList.toggle('on',v==='cheap');render()};$('s-value').onclick=()=>setSub('value');$('s-cheap').onclick=()=>setSub('cheap');
 $('go').onclick=async()=>{const p=await resolve($('zip').value);if(!p){$('locmsg').textContent='Unknown US ZIP or city — try e.g. 10001 or "Austin, TX"';return}loc=[p[0],p[1]];near=String(p[2]).replace(/^ZIP /,'');$('locmsg').textContent='Using: '+p[2];load()};
 $('zip').onkeydown=e=>{if(e.key==='Enter')$('go').click()};
 $('geo').onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>{loc=[p.coords.latitude,p.coords.longitude];near='';$('locmsg').textContent='Using: your location';load()},()=>$('locmsg').textContent='Location blocked — enter a ZIP'):0;
