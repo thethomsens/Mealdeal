@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MealDeal for Restaurants</title><link rel="stylesheet" href="style.css"></head><body>
+<header><h1>🍔 MealDeal <small>for restaurants</small></h1><p>List your specials free and reach hungry locals.</p><nav><a href="/">← Find deals</a></nav></header>
+<main><div class="card"><h2>Free listings for your specials</h2><ul class="pitch"><li>✅ Free: post daily specials, happy hours, BOGOs and combos</li><li>📍 Shown to people searching nearby, ranked by price and value</li><li>😋 Shows up in Craving searches for your food type</li><li>⭐ <b>Featured listings coming soon</b>: optional paid placement at the top</li></ul>
+<p class="muted">Every listing is reviewed before it is marked verified.</p></div>
+<form id="rf" class="card"><input name="restaurant" placeholder="Restaurant name" required><input name="contact_email" type="email" placeholder="Contact email (not shown publicly)" required>
+<input name="address" placeholder="Street address, city, state ZIP" required>
+<select name="cuisine" required><option value="">Cuisine…</option><option>burger</option><option>chicken</option><option>mexican</option><option>pizza</option><option>asian</option><option>breakfast</option><option>sandwich</option><option>healthy</option><option>dessert</option><option>other</option></select>
+<input name="deal" placeholder="Your special(s), e.g. 2 tacos + chips + drink" required><input name="price" type="number" step="0.01" min="0.01" placeholder="Price $" required><input name="items" type="number" min="1" placeholder="# of items (for value score)">
+<input name="days" placeholder="Days / times, e.g. Tue 11am–2pm"><label><input type="checkbox" name="owner" required> I'm the owner or manager of this restaurant</label>
+<button>Submit free listing</button><div id="rmsg" class="muted"></div></form></main>
+<footer class="muted">Submissions are saved as restaurant-posted and unreviewed until we check them.</footer>
+<script>document.getElementById('rf').onsubmit=async e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));let ll={};try{const g=await fetch('/api/geocode?q='+encodeURIComponent((f.address.match(/\b\d{5}\b/)||[f.address.split(',').slice(-2).join(',')])[0]));if(g.ok){const j=await g.json();ll={lat:j.lat,lng:j.lng}}}catch(_){}
+const r=await fetch('/api/deals',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...f,...ll,source:'restaurant',owner:!!f.owner,category:'daily'})});document.getElementById('rmsg').textContent=r.ok?'Thanks! Your listing was received and is pending review.':'Error: '+(await r.json()).error;if(r.ok)e.target.reset()}</script></body></html>

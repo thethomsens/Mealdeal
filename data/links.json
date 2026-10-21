@@ -1,0 +1,4 @@
+{"_README":"Affiliate IDs are EMPTY placeholders. Fill in real IDs from each program once approved; links work untracked until then.",
+"doordash":{"base":"https://www.doordash.com/search/store/{q}/","affiliateParam":"","affiliateId":""},
+"ubereats":{"base":"https://www.ubereats.com/search?q={q}","affiliateParam":"","affiliateId":""},
+"official":{"affiliateParam":"","affiliateId":""}}

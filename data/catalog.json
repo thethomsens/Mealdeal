@@ -1,0 +1,70 @@
+{"checked":"2026-10-21","chains":[
+{"name":"McDonald's","qid":"Q38076","cuisine":["burger","chicken"],"order":"https://www.mcdonalds.com/us/en-us/mobile-order-and-pay.html","deals":[
+ {"deal":"McChicken Meal Deal: McChicken, 4pc McNuggets, small fries, small drink","price":5,"items":4,"days":"Daily","url":"https://www.mcdonalds.com/us/en-us/full-menu/5-dollar-meals.html","strength":"official"},
+ {"deal":"McDouble Meal Deal: McDouble, 4pc McNuggets, small fries, small drink","price":5,"items":4,"days":"Daily","url":"https://www.mcdonalds.com/us/en-us/meal/5-dollar-mcdouble-meal.html","strength":"official","note":"\"Starts at $5\"; $6 in some areas."}]},
+{"name":"Wendy's","qid":"Q550258","cuisine":["burger","chicken"],"order":"https://order.wendys.com/","deals":[
+ {"deal":"Biggie Bag: sandwich, 4pc nuggets, Jr. fry, small drink","price":6,"items":4,"days":"Daily from lunch","url":"https://www.wendys.com/mealdeals","strength":"official"},
+ {"deal":"Biggie Bundle: 2 sandwiches, Jr. fry, small drink","price":8,"items":4,"days":"Daily from lunch","url":"https://www.wendys.com/mealdeals","strength":"official"},
+ {"deal":"Biggie Bites: pick 2 (e.g. Jr. Cheeseburger + Jr. Fry)","price":4,"items":2,"days":"Daily","url":"https://www.irwendys.com/news/news-details/2026/Wendys-Introduces-New-Biggie-Deals-Menu-starting-at-4/","strength":"official"}]},
+{"name":"Taco Bell","qid":"Q752941","cuisine":["mexican"],"order":"https://www.tacobell.com/food","deals":[
+ {"deal":"$5 Luxe Cravings Box: crunchy taco, Beefy 5-Layer Burrito, chips & cheese, medium drink","price":5,"items":4,"days":"Limited time","url":"https://www.tacobell.com/luxebox","strength":"official"},
+ {"deal":"$9 Luxe Cravings Box: Cantina Chicken Burrito, crispy taco, crunchy taco, chips & cheese, medium drink","price":9,"items":5,"days":"Limited time","url":"https://www.tacobell.com/luxebox","strength":"official"}]},
+{"name":"Burger King","qid":"Q177054","cuisine":["burger","chicken"],"order":"https://www.bk.com/","deals":[
+ {"deal":"$5 Your Way Meal: Whopper Jr./Chicken Jr./Bacon Cheeseburger, 4pc nuggets, small fries, small drink","price":5,"items":4,"days":"Daily","url":"https://menupedia.us/burger-king-menu/","strength":"third-party","note":"Third-party price guide, not BK official; confirm in BK app."}]},
+{"name":"Subway","qid":"Q244457","cuisine":["sandwich"],"order":"https://www.subway.com/en-us/","deals":[
+ {"deal":"$6.99 Footlong (promo code / app)","price":6.99,"items":1,"days":"Limited time","url":"https://www.eatdrinkdeals.com/fastfoodcoupons/","strength":"third-party","note":"Reported by EatDrinkDeals (Oct 2026); promo code required, confirm in Subway app."}]},
+{"name":"Arby's","qid":"Q630866","cuisine":["sandwich"],"order":"https://www.arbys.com/","deals":[
+ {"deal":"Meat and 3: Ham & Swiss or chicken sandwich, small fry, 2 mozzarella sticks, peach cobbler roll, small drink","price":7.99,"items":5,"days":"Daily (while offered)","url":"https://www.tastingtable.com/2211984/best-new-fast-food-deals-2026/","strength":"third-party","note":"Reported by Tasting Table (2026)."}]},
+{"name":"Jack in the Box","qid":"Q1538507","cuisine":["burger","chicken"],"order":"https://www.jackinthebox.com/","deals":[
+ {"deal":"$5 Munch Better Meal: Jr. chicken sandwich or Jr. Jumbo Jack, small fries, small drink","price":5,"items":3,"days":"Daily (while offered)","url":"https://www.tastingtable.com/2211984/best-new-fast-food-deals-2026/","strength":"third-party","note":"Reported by Tasting Table (2026)."}]},
+{"name":"Del Taco","qid":"Q1183818","cuisine":["mexican"],"order":"https://deltaco.com/","deals":[
+ {"deal":"Get a Lot Pack: 2 snack tacos, 2 grilled chicken snackers, 2 value bean & cheese burritos, 16oz drink","price":8.99,"items":7,"days":"Daily (while offered)","url":"https://www.tastingtable.com/2211984/best-new-fast-food-deals-2026/","strength":"third-party","note":"Reported by Tasting Table (2026)."}]},
+{"name":"Domino's","qid":"Q839466","cuisine":["pizza"],"order":"https://www.dominos.com/","deals":[
+ {"deal":"Mix & Match: any 2+ medium 2-topping pizzas, sides or desserts, $6.99 each (price shown = 2 items)","price":13.98,"items":2,"days":"Daily","url":"https://www.dominos.com/en/deals","strength":"official","note":"Dominos.com: 'Prices higher for some locations.'"}]},
+{"name":"Little Caesars","qid":"Q1393809","cuisine":["pizza"],"order":"https://littlecaesars.com/en-us/order/","deals":[
+ {"deal":"More for $9.99 Menu: choose a pairing (e.g. Classic Pepperoni pizza combos)","price":9.99,"items":1,"days":"Daily","url":"https://littlecaesars.com/en-us/contact-us/pressroom/value-leader/","strength":"official","note":"Pairings vary; counted conservatively as 1 item."}]},
+{"name":"KFC","qid":"Q524757","cuisine":["chicken"],"order":"https://www.kfc.com/menu","deals":[
+ {"deal":"Taste of KFC: 2pc fried chicken, a side and a biscuit","price":5.99,"items":3,"days":"Daily (while offered)","url":"https://www.brandeating.com/p/current-menu-promotions.html","strength":"third-party","note":"Reported by Brand Eating / EatDrinkDeals (Oct 2026); 'starting at'."},
+ {"deal":"$20 Build-A-Bucket: 8pc chicken or tenders, 4 sides, 4 biscuits","price":20,"items":16,"days":"Daily (while offered)","url":"https://www.brandeating.com/p/current-menu-promotions.html","strength":"third-party","note":"Reported by Brand Eating (Oct 2026); feeds a group."}]},
+{"name":"Popeyes","qid":"Q1330910","cuisine":["chicken"],"order":"https://www.popeyes.com/","deals":[
+ {"deal":"$5 Faves: 2pc chicken + biscuit (or 3 tenders, or 2 regular sides)","price":5,"items":2,"days":"Daily (while offered)","url":"https://www.brandeating.com/p/current-menu-promotions.html","strength":"third-party","note":"Reported by Brand Eating (Oct 2026)."}]},
+{"name":"Sonic","qid":"Q7561808","cuisine":["burger"],"order":"https://www.sonicdrivein.com/","deals":[
+ {"deal":"$7 Big Deal Meal: Sonic Cheeseburger, medium fries or tots, medium drink, sundae","price":7,"items":4,"days":"Limited time","url":"https://dealsfinders.com/fastfood-coupons/","strength":"third-party","note":"Reported by DealsFinders (checked Oct 20, 2026) and Brand Eating."}]},
+{"name":"Pizza Hut","qid":"Q191615","cuisine":["pizza"],"order":"https://www.pizzahut.com/","deals":[
+ {"deal":"$7 Deal Lover's Menu: 2+ items (medium 1-topping pizza, melts, wings, pasta...) $7 each (price shown = 2 items)","price":14,"items":2,"days":"Daily (while offered)","url":"https://www.brandeating.com/p/current-menu-promotions.html","strength":"third-party","note":"Reported by Brand Eating / Cheapism (2026)."}]},
+{"name":"Papa John's","qid":"Q2759586","cuisine":["pizza"],"order":"https://www.papajohns.com/order/menu","deals":[
+ {"deal":"Papa Pairings: 2+ medium 1-topping pizzas, sandwiches, wings, sides, $6.99 each (price shown = 2 items)","price":13.98,"items":2,"days":"Daily","url":"https://www.papajohns.com/specials/","strength":"official","note":"'Starting at'; varies by location."},
+ {"deal":"Large 1-Topping Carryout Special","price":8.99,"items":1,"days":"Carryout","url":"https://www.papajohns.com/specials/","strength":"official","note":"'Starting at'; carryout only."}]},
+{"name":"Carl's Jr.","qid":"Q1043486","cuisine":["burger"],"order":"https://www.carlsjr.com/","deals":[
+ {"deal":"$6.99 Cali Combo (app)","price":6.99,"items":1,"days":"Limited time","url":"https://www.eatdrinkdeals.com/fastfoodcoupons/","strength":"third-party","note":"Reported by EatDrinkDeals (Oct 17, 2026); combo contents not confirmed, counted as 1 item."}]},
+{"name":"Jimmy John's","qid":"Q1689380","cuisine":["sandwich"],"order":"https://www.jimmyjohns.com/","deals":[
+ {"deal":"Regular-size sandwich $5.99 (promo code)","price":5.99,"items":1,"days":"Limited time","url":"https://www.eatdrinkdeals.com/fastfoodcoupons/","strength":"third-party","note":"Reported by EatDrinkDeals (Oct 2026)."}]},
+{"name":"Jersey Mike's","qid":"Q6184897","cuisine":["sandwich"],"order":"https://www.jerseymikes.com/","deals":[
+ {"deal":"Hot Italian sub","price":8.95,"items":1,"days":"Limited time","url":"https://www.eatdrinkdeals.com/fastfoodcoupons/","strength":"third-party","note":"Reported by EatDrinkDeals (Oct 2026); size not confirmed."}]},
+{"name":"Firehouse Subs","qid":"Q5451873","cuisine":["sandwich"],"order":"https://www.firehousesubs.com/","deals":[
+ {"deal":"2 Medium subs for $14","price":14,"items":2,"days":"Limited time","url":"https://www.eatdrinkdeals.com/fastfoodcoupons/","strength":"third-party","note":"Reported by EatDrinkDeals (Oct 5, 2026)."}]},
+{"name":"White Castle","qid":"Q1750623","cuisine":["burger"],"order":"https://www.whitecastle.com/","deals":[
+ {"deal":"10-Sack of original sliders","price":8.99,"items":10,"days":"Limited time","url":"https://www.eatdrinkdeals.com/fastfoodcoupons/","strength":"third-party","note":"Reported by EatDrinkDeals (Oct 2026)."}]},
+{"name":"Potbelly","qid":"Q7234777","cuisine":["sandwich"],"order":"https://www.potbelly.com/","deals":[
+ {"deal":"$7.99 sandwich combo","price":7.99,"items":1,"days":"Limited time","url":"https://www.eatdrinkdeals.com/fastfoodcoupons/","strength":"third-party","note":"Reported by EatDrinkDeals (Oct 2026); combo contents not confirmed, counted as 1 item."}]},
+{"name":"Wingstop","qid":"Q8025339","cuisine":["chicken"],"order":"https://www.wingstop.com/","deals":[
+ {"deal":"Boneless Meal Deal","price":16.99,"items":1,"days":"Limited time","url":"https://www.eatdrinkdeals.com/fastfoodcoupons/","strength":"third-party","note":"Reported by EatDrinkDeals (Oct 2026); contents not confirmed, counted as 1 item. Also $0.70 boneless wings Mon/Tue."}]},
+{"name":"Chick-fil-A","qid":"Q491516","cuisine":["chicken"],"order":"https://www.chick-fil-a.com/order","deals":[]},
+{"name":"Starbucks","qid":"Q37158","cuisine":["breakfast"],"order":"https://www.starbucks.com/menu","deals":[]},
+{"name":"Dunkin'","qid":"Q847743","cuisine":["breakfast"],"order":"https://www.dunkindonuts.com/en/mobile-app","deals":[]},
+{"name":"Dairy Queen","qid":"Q1141226","cuisine":["burger","dessert"],"order":"https://www.dairyqueen.com/en-us/","deals":[],"why":"$6.99 4pc Chicken Strip Basket reported but not re-confirmed since Sep 2026"},
+{"name":"Panda Express","qid":"Q1358690","cuisine":["asian","chicken"],"order":"https://www.pandaexpress.com/","deals":[]},
+{"name":"Chipotle","qid":"Q465751","cuisine":["mexican","healthy"],"order":"https://www.chipotle.com/order","deals":[]},
+{"name":"Whataburger","qid":"Q376627","cuisine":["burger"],"order":"https://whataburger.com/","deals":[]},
+{"name":"Five Guys","qid":"Q1131810","cuisine":["burger"],"order":"https://order.fiveguys.com/","deals":[]},
+{"name":"Culver's","qid":"Q1144164","cuisine":["burger","dessert"],"order":"https://www.culvers.com/","deals":[]},
+{"name":"Raising Cane's","qid":"Q7285144","cuisine":["chicken"],"order":"https://www.raisingcanes.com/","deals":[]},
+{"name":"Zaxby's","qid":"Q8067525","cuisine":["chicken"],"order":"https://www.zaxbys.com/","deals":[]},
+{"name":"Hardee's","qid":"Q1585088","cuisine":["burger","breakfast"],"order":"https://www.hardees.com/","deals":[]},
+{"name":"Bojangles","qid":"Q891163","cuisine":["chicken","breakfast"],"order":"https://www.bojangles.com/","deals":[]},
+{"name":"Panera Bread","qid":"Q7130852","cuisine":["sandwich","healthy"],"order":"https://www.panerabread.com/","deals":[]},
+{"name":"Papa Murphy's","qid":"Q7132349","cuisine":["pizza"],"order":"https://www.papamurphys.com/","deals":[]},
+{"name":"Marco's Pizza","qid":"Q6757382","cuisine":["pizza"],"order":"https://www.marcos.com/","deals":[]},
+{"name":"Cafe Rio","qid":"Q5017108","cuisine":["mexican"],"order":"https://www.caferio.com/","deals":[]},
+{"name":"Costa Vida","qid":"Q5174223","cuisine":["mexican","healthy"],"order":"https://www.costavida.com/","deals":[]}
+]}

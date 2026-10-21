@@ -1,0 +1,11 @@
+const p=require('puppeteer-core');(async()=>{const b=await p.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});const g=await b.newPage();await g.setViewport({width:400,height:1100,deviceScaleFactor:2});
+const t=()=>g.$$eval('#list li',l=>l.map(e=>e.querySelector('.top')?.innerText.replace(/\n/g,' ')||e.innerText));
+await g.goto('http://localhost:3000');await g.waitForSelector('#list li');await g.screenshot({path:'screenshots/home-cheapest.png'});
+await g.click('#m-value');await g.screenshot({path:'screenshots/home-best-value.png'});
+await g.click('#m-crave');await g.type('#crave','burrito');console.log('burrito',await t());
+await g.$eval('#crave',e=>e.value='');await g.type('#crave','fries');console.log('fries',(await t()).length);
+await g.click('.chips button[data-c=tacos]');console.log('tacos value',await t());await g.click('#spin');console.log('spin',await g.$eval('#pick',e=>e.innerText.split('\n')[1]));
+await g.screenshot({path:'screenshots/craving.png'});
+await g.click('#s-cheap');console.log('tacos cheap',await t());
+await g.$eval('#crave',e=>e.value='');await g.type('#crave','steak');console.log('steak',await t());await g.click('#spin');await g.screenshot({path:'screenshots/craving-empty.png'});
+await b.close()})();

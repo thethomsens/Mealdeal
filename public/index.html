@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MealDeal</title><link rel="stylesheet" href="style.css"></head><body>
+<header><h1>🍔 MealDeal <small>Deals near you, anywhere in the US</small></h1><nav><a href="/restaurants">For restaurants →</a></nav><p>Best food deal near you, right now.</p></header>
+<main>
+<div class="modes"><button id="m-cheap" class="on">💸 Cheapest</button><button id="m-value">🏆 Best Value</button><button id="m-crave">😋 Craving</button></div>
+<div id="cravebox" hidden><input id="crave" placeholder="What are you craving? (tacos, burger, pho…)">
+<div class="chips"><button data-c="tacos">🌮 Tacos</button><button data-c="burger">🍔 Burger</button><button data-c="pizza">🍕 Pizza</button><button data-c="chicken">🍗 Chicken</button><button data-c="breakfast">🥞 Breakfast</button><button data-c="asian">🍜 Asian</button><button data-c="healthy">🥗 Healthy</button></div>
+<div class="sub"><button id="s-value" class="on">🏆 Best value</button><button id="s-cheap">💸 Cheapest</button></div></div>
+<div class="loc"><input id="zip" placeholder="Any US ZIP or city (e.g. 10001, Austin, TX)"><button id="go">Set</button><button id="geo" title="Use my location">📍</button></div>
+<div id="locmsg" class="muted">Using: Downtown Salt Lake City</div><div id="storemsg" class="muted"></div>
+<label class="muted"><input type="checkbox" id="vonly"> Verified deals only</label>
+<button id="spin" class="spin">🎰 Spin for a deal</button>
+<div id="pick"></div>
+<ul id="list"></ul>
+<details id="submit"><summary>➕ Submit a special</summary>
+<form id="f"><input name="restaurant" placeholder="Restaurant" required><input name="deal" placeholder="Deal (e.g. 2 tacos + drink)" required>
+<input name="price" type="number" step="0.01" min="0.01" placeholder="Price $" required><input name="items" type="number" min="1" placeholder="# of items (for value score)">
+<select name="category"><option value="daily">Daily special</option><option value="combo">Combo</option><option value="happy_hour">Happy hour</option><option value="bogo">BOGO</option></select>
+<select name="cuisine" required><option value="">Food type…</option><option value="burger">Burger</option><option value="chicken">Chicken</option><option value="mexican">Mexican</option><option value="pizza">Pizza</option><option value="asian">Asian</option><option value="breakfast">Breakfast</option><option value="sandwich">Sandwich</option><option value="healthy">Healthy</option><option value="dessert">Dessert</option><option value="other">Other</option></select>
+<input name="days" placeholder="Days/times (e.g. Tue 11-2)"><input name="address" placeholder="Address incl. ZIP" required>
+<label><input type="checkbox" name="isrest"> I'm the restaurant (owner/staff)</label><button>Submit</button><div id="fmsg"></div></form></details>
+</main><footer class="muted">Prices vary by location; confirm with the restaurant. "SAMPLE" entries are placeholder demo data, not real deals.</footer>
+<script src="app.js"></script><footer class="muted">Affiliate disclosure: “Order now”, DoorDash and Uber Eats links may become affiliate links, and MealDeal may earn a commission at no extra cost to you. Chain store locations © OpenStreetMap contributors.</footer></body></html>

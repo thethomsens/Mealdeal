@@ -1,0 +1,10 @@
+const p=require('puppeteer-core');(async()=>{const b=await p.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});const g=await b.newPage();await g.setViewport({width:400,height:1300,deviceScaleFactor:2});
+const t=()=>g.$$eval('#list li',l=>l.slice(0,3).map(e=>e.querySelector('.top')?.innerText.replace(/\n/g,' ')));
+await g.goto('http://localhost:3000');await g.waitForSelector('#list li .top',{timeout:60000});
+await g.$eval('#zip',e=>e.value='');await g.type('#zip','10001');await g.click('#go');await g.waitForFunction(()=>/chain locations|unavailable/.test(document.getElementById('storemsg').innerText),{timeout:120000});
+console.log(await g.$eval('#locmsg',e=>e.innerText),'|',await g.$eval('#storemsg',e=>e.innerText));console.log('cheap',await t());
+await g.screenshot({path:'screenshots/national.png'});
+const c=await g.$('#list li');await c.screenshot({path:'screenshots/order-buttons.png'});
+await g.click('#m-value');console.log('value',await t());await g.click('#m-crave');await g.type('#crave','pizza');console.log('pizza',await t());await g.click('#spin');console.log('spin',await g.$eval('#pick',e=>e.innerText.split('\n')[1]));
+console.log('links',await g.$$eval('#list li:first-child .order a',a=>a.map(x=>x.rel+' '+x.href)));
+await g.goto('http://localhost:3000/restaurants');await g.screenshot({path:'screenshots/restaurants.png',fullPage:true});await b.close()})();

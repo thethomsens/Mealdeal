@@ -1,0 +1,12 @@
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:#fff8f0;color:#222}header{background:#ff5a1f;color:#fff;padding:16px}h1{margin:0;font-size:1.6em}header p{margin:4px 0 0}main{max-width:560px;margin:auto;padding:12px}
+.modes{display:flex;gap:8px}.modes button{flex:1;padding:12px;border:2px solid #ff5a1f;background:#fff;border-radius:12px;font-weight:600;font-size:1em}.modes .on{background:#ff5a1f;color:#fff}
+.loc{display:flex;gap:6px;margin:10px 0 4px}.loc input{flex:1}input,select,button{font-size:1em;padding:10px;border-radius:10px;border:1px solid #ccc}button{cursor:pointer}
+.muted{color:#777;font-size:.85em}.spin{width:100%;margin:10px 0;background:#222;color:#fff;font-size:1.15em;padding:14px;border:0}
+ul{list-style:none;padding:0}li,.card{background:#fff;border-radius:12px;padding:12px;margin:8px 0;box-shadow:0 1px 4px #0001}.top{display:flex;justify-content:space-between;font-weight:700}.price{color:#ff5a1f;font-size:1.2em}
+.tag{display:inline-block;font-size:.72em;padding:2px 7px;border-radius:8px;margin-right:4px;background:#eee}.ver{background:#d6f5dd;color:#176b2c}.sam{background:#ffe1e1;color:#a11}.rest{background:#dde8ff;color:#1b3f99}
+#pick .card{border:3px solid #ff5a1f}form{display:grid;gap:8px;margin-top:8px}footer{text-align:center;padding:20px}a{color:#ff5a1f}
+
+#cravebox{margin:10px 0}#crave{width:100%}.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.chips button{padding:6px 10px;border-radius:16px;background:#fff;border:1px solid #ff5a1f;font-size:.9em}.sub{display:flex;gap:6px}.sub button{flex:1;padding:6px;background:#fff}.sub .on{background:#222;color:#fff}.cu{background:#fff0e0;color:#a64b00}.empty{text-align:center;padding:20px}.modes button{padding:12px 4px}
+header nav{margin-top:6px}header nav a{color:#fff;font-weight:600}.tag.nat{background:#e8f0ff;color:#1a3d8f}
+.order{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.ob{padding:6px 10px;border-radius:8px;text-decoration:none;font-size:.85em;font-weight:600;border:1px solid #ccc;color:#222;background:#fff}.ob.official{background:#ff5a1f;color:#fff;border-color:#ff5a1f}.ob.doordash{color:#eb1700}.ob.ubereats{color:#06c167}
+footer{max-width:560px;margin:auto;padding:12px;font-size:.8em}.pitch li{margin:4px 0}
