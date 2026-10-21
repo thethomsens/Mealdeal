@@ -9,12 +9,20 @@ const BYQ={},BYN={};CAT.chains.forEach(c=>{BYQ[c.qid]=c;BYN[norm(c.name)]=c});BY
 const km=(a,b)=>{const R=6371,r=x=>x*Math.PI/180,dl=r(b[0]-a[0]),dn=r(b[1]-a[1]);const h=Math.sin(dl/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
 const ST={alabama:'al',alaska:'ak',arizona:'az',arkansas:'ar',california:'ca',colorado:'co',connecticut:'ct',delaware:'de',florida:'fl',georgia:'ga',hawaii:'hi',idaho:'id',illinois:'il',indiana:'in',iowa:'ia',kansas:'ks',kentucky:'ky',louisiana:'la',maine:'me',maryland:'md',massachusetts:'ma',michigan:'mi',minnesota:'mn',mississippi:'ms',missouri:'mo',montana:'mt',nebraska:'ne',nevada:'nv','new hampshire':'nh','new jersey':'nj','new mexico':'nm','new york':'ny','north carolina':'nc','north dakota':'nd',ohio:'oh',oklahoma:'ok',oregon:'or',pennsylvania:'pa','rhode island':'ri','south carolina':'sc','south dakota':'sd',tennessee:'tn',texas:'tx',utah:'ut',vermont:'vt',virginia:'va',washington:'wa','west virginia':'wv',wisconsin:'wi',wyoming:'wy','district of columbia':'dc'};
 const ALIAS={slc:'salt lake city, ut',nyc:'new york, ny','new york city':'new york, ny',la:'los angeles, ca',dc:'washington, dc',stansbury:'stansbury park, ut'};
+const ZIPCITY=require('./data/zipcity.json'); // ZIP -> USPS primary city (scpike/us-state-county-zip)
+const PLIST=Object.entries(PLACES).map(([k,v])=>({k,lat:v[0],lng:v[1],r:Math.max(1,Math.sqrt((v[2]||0)/1e6/Math.PI))}));
+const ptitle=k=>k.replace(/\b\w/g,c=>c.toUpperCase()).replace(/, (\w+)$/,(x,s)=>', '+s.toUpperCase());
+// ZIP3 prefix -> state (USPS ranges), so a ZIP never resolves across a state line
+const Z3=[[5,5,'ny'],[6,9,'pr'],[10,27,'ma'],[28,29,'ri'],[30,38,'nh'],[39,49,'me'],[50,59,'vt'],[60,69,'ct'],[70,89,'nj'],[100,149,'ny'],[150,196,'pa'],[197,199,'de'],[200,200,'dc'],[201,201,'va'],[202,205,'dc'],[206,219,'md'],[220,246,'va'],[247,268,'wv'],[270,289,'nc'],[290,299,'sc'],[300,319,'ga'],[320,349,'fl'],[350,369,'al'],[370,385,'tn'],[386,397,'ms'],[398,399,'ga'],[400,427,'ky'],[430,459,'oh'],[460,479,'in'],[480,499,'mi'],[500,528,'ia'],[530,549,'wi'],[550,567,'mn'],[569,569,'dc'],[570,577,'sd'],[580,588,'nd'],[590,599,'mt'],[600,629,'il'],[630,658,'mo'],[660,679,'ks'],[680,693,'ne'],[700,714,'la'],[716,729,'ar'],[730,749,'ok'],[750,799,'tx'],[800,816,'co'],[820,831,'wy'],[832,838,'id'],[840,847,'ut'],[850,865,'az'],[870,884,'nm'],[885,885,'tx'],[889,898,'nv'],[900,961,'ca'],[967,968,'hi'],[970,979,'or'],[980,994,'wa'],[995,999,'ak']];
+const zipState=z=>{const n=+String(z).slice(0,3);const e=Z3.find(([a,b])=>n>=a&&n<=b);return e&&e[2]};
+// primary city for a point: nearest Census place center (optionally limited to one state)
+function cityAt(lat,lng,st){let best=null,bd=1e9;for(const p of PLIST){if(Math.abs(p.lat-lat)>1.5||Math.abs(p.lng-lng)>2)continue;if(st&&!p.k.endsWith(', '+st))continue;const d=km([lat,lng],[p.lat,p.lng]);if(d<bd){bd=d;best={...p,d}}}return best||(st?cityAt(lat,lng):null)}
+const cityRes=(c,src,extra)=>({lat:c.lat,lng:c.lng,label:ptitle(c.k),src,...extra});
 async function geocode(q){q=String(q||'').trim().toLowerCase();if(!q)return null;
- const z=q.match(/^\d{5}/);if(z){if(ZIPS[z[0]])return{lat:ZIPS[z[0]][0],lng:ZIPS[z[0]][1],label:'ZIP '+z[0],src:'census-zcta'};
-  const n=await nominatim({postalcode:z[0],country:'us'});if(n)return{...n,label:'ZIP '+z[0],src:'nominatim'};
-  // PO-box / unique ZIPs: nearest ZCTA in the same 3-digit prefix
-  const near=Object.keys(ZIPS).filter(k=>k.slice(0,3)===z[0].slice(0,3)).sort((a,b)=>Math.abs(a-z[0])-Math.abs(b-z[0]))[0];
-  return near?{lat:ZIPS[near][0],lng:ZIPS[near][1],label:'ZIP '+z[0]+' (approx. via '+near+')',src:'census-zcta-prefix'}:null}
+ const z=q.match(/^\d{5}/);if(z){let pt=ZIPS[z[0]];
+  if(!pt){const n=await nominatim({postalcode:z[0],country:'us'});if(n)pt=[n.lat,n.lng];}
+  if(!pt){const near=Object.keys(ZIPS).filter(k=>k.slice(0,3)===z[0].slice(0,3)).sort((a,b)=>Math.abs(a-z[0])-Math.abs(b-z[0]))[0];if(near)pt=ZIPS[near];}
+  if(!pt)return null;const nm=ZIPCITY[z[0]],named=nm&&PLACES[nm]&&km(pt,PLACES[nm])<60?{k:nm,lat:PLACES[nm][0],lng:PLACES[nm][1]}:null;const c=named||cityAt(pt[0],pt[1],zipState(z[0]));return c?cityRes(c,'census-places-from-zip',{zip:z[0]}):null}
  q=ALIAS[q]||q;let m=q.match(/^(.+?)[,\s]+([a-z .]+)$/),key=null;
  if(m){let s=m[2].trim().replace(/\./g,'');s=ST[s]||s;if(PLACES[m[1].trim()+', '+s])key=m[1].trim()+', '+s;}
  if(!key&&PLACES[q])key=q;
@@ -53,6 +61,7 @@ app.get('/api/places',(q,r)=>{const s=String(q.query.q||'').trim().toLowerCase()
  if(/^\d{1,5}$/.test(s))return r.json(ZKEYS.filter(z=>z.startsWith(s)).slice(0,8).map(z=>({label:z,value:z,type:'zip'})));
  const m=s.match(/^(.+?),\s*([a-z ]*)$/),name=(m?m[1]:s).trim(),st=m?(ST[m[2].trim()]||m[2].trim()):'';
  r.json(PKEYS.filter(p=>p.n.startsWith(name)&&(!st||p.k.slice(p.k.lastIndexOf(',')+2).startsWith(st))).sort((a,b)=>(b.n===name)-(a.n===name)).slice(0,8).map(p=>({label:title(p.k),value:title(p.k),type:'city'})))});
+app.get('/api/reverse',(q,r)=>{const la=parseFloat(q.query.lat),ln=parseFloat(q.query.lng);if(!isFinite(la)||!isFinite(ln))return r.status(400).json({error:'lat,lng required'});const c=cityAt(la,ln);r.json({lat:la,lng:ln,label:c&&c.d<=Math.max(8,c.r*1.5)?'Your location (near '+ptitle(c.k)+')':'Your location'})});
 app.get('/api/geocode',async(q,r)=>{const g=await geocode(q.query.q);g?r.json(g):r.status(404).json({error:'Could not find that US ZIP or city'})});
 const GENERIC=d=>/^Participating/.test(d.address||'');
 app.get('/api/deals',async(q,r)=>{const lat=parseFloat(q.query.lat),lng=parseFloat(q.query.lng),near=String(q.query.near||'').slice(0,60);let db=load();
