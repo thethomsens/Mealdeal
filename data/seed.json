@@ -16,7 +16,10 @@
   "note": "Price & participation vary; app registration required per McDonald's.",
   "cuisine": [
    "chicken"
-  ]
+  ],
+  "calories": 790,
+  "calSource": "https://www.mcdonalds.com/us/en-us/product/mcchicken.html",
+  "calNote": "McChicken 390 + 4pc McNuggets 170 + small fries 230 (mcdonalds.com product pages); drink not included"
  },
  {
   "restaurant": "McDonald's",
@@ -36,7 +39,10 @@
   "cuisine": [
    "burger",
    "chicken"
-  ]
+  ],
+  "calories": 790,
+  "calSource": "https://www.mcdonalds.com/us/en-us/product/mcdouble.html",
+  "calNote": "McDouble 390 + 4pc McNuggets 170 + small fries 230 (mcdonalds.com product pages); drink not included"
  },
  {
   "restaurant": "Wendy's",
@@ -113,7 +119,10 @@
   "note": "Limited time; Taco Bell's two promo pages list different box contents.",
   "cuisine": [
    "mexican"
-  ]
+  ],
+  "calories": 880,
+  "calSource": "https://www.tacobell.com/food/tacos",
+  "calNote": "Crunchy Taco 170 + Beefy 5-Layer Burrito 490 + Chips & Nacho Cheese 220 (tacobell.com); drink not included"
  },
  {
   "restaurant": "Taco Bell",
@@ -270,7 +279,10 @@
    "chicken"
   ],
   "store_url": "http://business.tooelechamber.com/list/ql/restaurants-food-beverages-22",
-  "area": "Tooele"
+  "area": "Tooele",
+  "calories": 790,
+  "calSource": "https://www.mcdonalds.com/us/en-us/product/mcchicken.html",
+  "calNote": "McChicken 390 + 4pc McNuggets 170 + small fries 230 (mcdonalds.com product pages); drink not included"
  },
  {
   "restaurant": "McDonald's",
@@ -292,7 +304,10 @@
    "chicken"
   ],
   "store_url": "http://business.tooelechamber.com/list/ql/restaurants-food-beverages-22",
-  "area": "Tooele"
+  "area": "Tooele",
+  "calories": 790,
+  "calSource": "https://www.mcdonalds.com/us/en-us/product/mcdouble.html",
+  "calNote": "McDouble 390 + 4pc McNuggets 170 + small fries 230 (mcdonalds.com product pages); drink not included"
  },
  {
   "restaurant": "Wendy's",
@@ -377,7 +392,10 @@
    "mexican"
   ],
   "store_url": "https://locations.tacobell.com/ut/tooele.html",
-  "area": "Tooele"
+  "area": "Tooele",
+  "calories": 880,
+  "calSource": "https://www.tacobell.com/food/tacos",
+  "calNote": "Crunchy Taco 170 + Beefy 5-Layer Burrito 490 + Chips & Nacho Cheese 220 (tacobell.com); drink not included"
  },
  {
   "restaurant": "Taco Bell",

@@ -83,7 +83,7 @@ app.get('/api/deals',async(q,r)=>{const lat=parseFloat(q.query.lat),lng=parseFlo
   if((per[st.chain]=(per[st.chain]||0)+1)>1)return; // nearest store per chain
   if(local.some(d=>d.restaurant===st.chain&&km([d.lat,d.lng],[st.lat,st.lng])<0.4))return; // hand-verified store wins
   const c=BYN[norm(st.chain)];const base={restaurant:c.name,address:st.address,lat:st.lat,lng:st.lng,cuisine:c.cuisine,store_url:st.osm,area:'national',checked:CAT.checked,source:'chain',national:true};
-  c.deals.forEach(dl=>out.push({...base,id:nid++,deal:dl.deal,price:dl.price,items:dl.items,category:'combo',days:dl.days,verified:true,source_url:dl.url,strength:dl.strength,note:'National price, participation may vary.'+(dl.note?' '+dl.note:'')+(dl.strength==='third-party'?' (Third-party source, not the chain itself.)':'')}))});
+  c.deals.forEach(dl=>out.push({...base,id:nid++,deal:dl.deal,price:dl.price,items:dl.items,category:'combo',days:dl.days,verified:true,source_url:dl.url,strength:dl.strength,calories:dl.calories,calSource:dl.calSource,calNote:dl.calNote,note:'National price, participation may vary.'+(dl.note?' '+dl.note:'')+(dl.strength==='third-party'?' (Third-party source, not the chain itself.)':'')}))});
  MENU.startArea(lat,lng,LOCAL_R,MDEPS); // background, never awaited
  const menu=MENU.deals(lat,lng,LOCAL_R/1000).map(d=>({...d,order:[]}));
  const all=[...local,...generic,...out].filter(ok).map(fin).concat(menu);
