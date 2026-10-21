@@ -26,32 +26,46 @@ const MIRRORS=['https://maps.mail.ru/osm/tools/overpass/api/interpreter','https:
 async function overpass(lat,lng,m){const qs=CAT.chains.map(c=>c.qid).join('|'),q=`[out:json][timeout:25];(nwr["brand:wikidata"~"^(${qs})$"](around:${m},${lat},${lng});nwr["amenity"="fast_food"]["brand"]["!brand:wikidata"](around:${m},${lat},${lng}););out center tags;`;
  const one=async u=>{const r=await fetch(u,{method:'POST',body:'data='+encodeURIComponent(q),headers:{'User-Agent':'MealDeal/0.1 prototype','Content-Type':'application/x-www-form-urlencoded'},signal:AbortSignal.timeout(40000)});if(!r.ok)throw 0;const j=await r.json();if(j.remark&&/error|timed out/i.test(j.remark))throw 0;return{els:j.elements,mirror:u}};
  try{return await Promise.any(MIRRORS.map(one))}catch(e){return null}}
-async function stores(lat,lng){const key=lat.toFixed(2)+'_'+lng.toFixed(2),f=path.join(CACHE,key+'.json');
- if(fs.existsSync(f)){const c=JSON.parse(fs.readFileSync(f));if(Date.now()-c.t<14*864e5)return{...c,cached:true}}
- let res=await overpass(lat,lng,24000),radius=24000;if(res&&res.els.length<5){const r2=await overpass(lat,lng,48000);if(r2){res=r2;radius=48000}}
- if(!res)return{error:'Store lookup (OpenStreetMap Overpass) unreachable right now',list:[]};
- const list=res.els.map(e=>{const t=e.tags||{},c=BYQ[t['brand:wikidata']]||BYN[norm(t.brand)]||BYN[norm(t.name)];if(!c)return null;const la=e.lat??e.center?.lat,ln=e.lon??e.center?.lon;
+const MI=1609.34,R1=15*MI,R2=30*MI,SLC=[40.7608,-111.891],INFLIGHT=new Map(),RETRY=new Map();
+async function lookup(lat,lng,f){let res=await overpass(lat,lng,R1),radius=R1;if(res&&res.els.length<5){const r2=await overpass(lat,lng,R2);if(r2){res=r2;radius=R2}}
+ if(!res)return null;
+ const list=res.els.map(e=>{const t=e.tags||{},c=BYQ[t['brand:wikidata']]||BYN[norm(t.brand)]||BYN[norm(t.name)];if(!c)return null;const la=e.lat??e.center?.lat,ln=e.lon??e.center?.lon;if(la==null)return null;
   const addr=[[t['addr:housenumber'],t['addr:street']].filter(Boolean).join(' '),t['addr:city'],t['addr:state'],t['addr:postcode']].filter(Boolean).join(', ');
   return{chain:c.name,lat:la,lng:ln,address:addr||`${c.name} near ${la.toFixed(3)}, ${ln.toFixed(3)} (no street address in OSM)`,osm:`https://www.openstreetmap.org/${e.type}/${e.id}`}}).filter(Boolean);
- const out={t:Date.now(),radius,mirror:res.mirror,list};fs.writeFileSync(f,JSON.stringify(out));return out}
+ const out={t:Date.now(),v:2,radius,mirror:res.mirror,list};fs.writeFileSync(f,JSON.stringify(out));return out}
+// one lookup per area at a time; on failure keep retrying in the background (cache warming)
+function warm(lat,lng,key,f,attempt=0){if(INFLIGHT.has(key))return INFLIGHT.get(key);
+ const p=lookup(lat,lng,f).catch(()=>null).then(res=>{INFLIGHT.delete(key);
+  if(!res&&attempt<5&&!RETRY.has(key)){const t=setTimeout(()=>{RETRY.delete(key);warm(lat,lng,key,f,attempt+1)},Math.min(30e3*2**attempt,8*60e3));t.unref&&t.unref();RETRY.set(key,t)}
+  return res});INFLIGHT.set(key,p);return p}
+async function stores(lat,lng){const key=lat.toFixed(2)+'_'+lng.toFixed(2),f=path.join(CACHE,key+'.json');
+ if(fs.existsSync(f)){try{const c=JSON.parse(fs.readFileSync(f));if(c.v===2&&Date.now()-c.t<14*864e5)return{...c,cached:true}}catch(_){}}
+ const res=await Promise.race([warm(lat,lng,key,f),new Promise(ok=>setTimeout(()=>ok('slow'),12000))]);
+ if(res==='slow')return{loading:true,list:[]};if(!res)return{error:true,list:[]};return res}
 const link=(base,q,cfg)=>{let u=base.replace('{q}',encodeURIComponent(q));if(cfg.affiliateParam&&cfg.affiliateId)u+=(u.includes('?')?'&':'?')+cfg.affiliateParam+'='+encodeURIComponent(cfg.affiliateId);return u};
 function orderLinks(name,near){const c=BYN[norm(name)],o=[];if(c&&c.order)o.push({label:'Order on '+name.replace(/'s$|’s$/,"'s")+' site',url:link(c.order,'',LINKS.official),kind:'official'});
  const q=name+(near?' '+near:'');o.push({label:'DoorDash',url:link(LINKS.doordash.base,name,LINKS.doordash),kind:'doordash'},{label:'Uber Eats',url:link(LINKS.ubereats.base,q,LINKS.ubereats),kind:'ubereats'});return o}
 const app=express();app.use(express.json());require('./admin.js')(app,{DB,load,CU});app.use(express.static(path.join(__dirname,'public'),{extensions:['html']}));
 app.get('/api/geocode',async(q,r)=>{const g=await geocode(q.query.q);g?r.json(g):r.status(404).json({error:'Could not find that US ZIP or city'})});
+const GENERIC=d=>/^Participating/.test(d.address||'');
 app.get('/api/deals',async(q,r)=>{const lat=parseFloat(q.query.lat),lng=parseFloat(q.query.lng),near=String(q.query.near||'').slice(0,60);let db=load();
- if(!(lat&&lng))return r.json({deals:db.map(d=>({...pub(d),order:orderLinks(d.restaurant,near)}))});
- const here=[lat,lng];db=db.filter(d=>!d.lat||km(here,[d.lat,d.lng])<=80);
- const pend={};const s=await Promise.race([stores(lat,lng),new Promise(ok=>setTimeout(()=>ok({error:'Store lookup is still loading (slow map server); try again in a minute',list:[]}),12000))]);const per={};let nid=100000;const out=[];
- s.list.map(x=>({...x,d:km(here,[x.lat,x.lng])})).sort((a,b)=>a.d-b.d).forEach(st=>{
+ const fin=d=>({...pub(d),order:orderLinks(d.restaurant,near)}),ok=d=>d.verified===true&&d.price!=null;
+ if(!(lat&&lng))return r.json({deals:db.filter(ok).filter(d=>!GENERIC(d)).map(fin)});
+ const here=[lat,lng],s=await stores(lat,lng),failed=!!(s.error||s.loading),radius=s.radius||R1,rKm=radius/1000;
+ const inRange=d=>d.lat!=null&&d.lng!=null&&km(here,[d.lat,d.lng])<=rKm;
+ const local=db.filter(d=>!GENERIC(d)&&inRange(d));
+ const nearSLC=km(here,SLC)<=15*MI/1000;
+ const chainsHere=new Set([...local.map(d=>d.restaurant),...s.list.filter(inRange).map(x=>x.chain)]);
+ const generic=failed||!nearSLC?[]:db.filter(d=>GENERIC(d)&&!chainsHere.has(d.restaurant));
+ let nid=100000;const out=[],per={};
+ s.list.filter(inRange).map(x=>({...x,d:km(here,[x.lat,x.lng])})).sort((a,b)=>a.d-b.d).forEach(st=>{
   if((per[st.chain]=(per[st.chain]||0)+1)>1)return; // nearest store per chain
-  if(db.some(d=>d.restaurant===st.chain&&d.lat&&!/^Participating/.test(d.address)&&km([d.lat,d.lng],[st.lat,st.lng])<0.4))return; // hand-verified store wins
+  if(local.some(d=>d.restaurant===st.chain&&km([d.lat,d.lng],[st.lat,st.lng])<0.4))return; // hand-verified store wins
   const c=BYN[norm(st.chain)];const base={restaurant:c.name,address:st.address,lat:st.lat,lng:st.lng,cuisine:c.cuisine,store_url:st.osm,area:'national',checked:CAT.checked,source:'chain',national:true};
-  if(!c.deals.length)out.push({...base,id:nid++,deal:'No verified deal yet',price:null,items:null,nodeal:true,category:'deal',days:'',verified:false,source_url:null,note:(c.why?c.why+'. ':'')+'No verifiable national value-deal price found as of '+CAT.checked+'. Submit one below!'});
-  else c.deals.forEach(dl=>out.push({...base,id:nid++,deal:dl.deal,price:dl.price,items:dl.items,category:'combo',days:dl.days,verified:true,source_url:dl.url,strength:dl.strength,note:'National price, participation may vary.'+(dl.note?' '+dl.note:'')+(dl.strength==='third-party'?' (Third-party source, not the chain itself.)':'')}))});
- if(s.error||!out.length)CAT.chains.filter(c=>c.deals.length&&!db.some(d=>d.restaurant===c.name)).forEach(c=>c.deals.forEach(dl=>out.push({id:nid++,restaurant:c.name,address:'Participating '+c.name+' locations ('+(s.error?'store lookup unavailable':'none mapped within '+Math.round((s.radius||0)/1609)+' mi')+'; use the chain app)',lat:null,lng:null,cuisine:c.cuisine,area:'national',checked:CAT.checked,source:'chain',national:true,deal:dl.deal,price:dl.price,items:dl.items,category:'combo',days:dl.days,verified:true,source_url:dl.url,strength:dl.strength,note:'National price, participation may vary.'+(dl.note?' '+dl.note:'')})));
- const all=[...db,...out].filter(d=>d.verified===true&&d.price!=null).map(d=>({...pub(d),order:orderLinks(d.restaurant,near)}));
- r.json({deals:all,stores:{count:s.list.length,radius_mi:s.radius?Math.round(s.radius/1609):null,cached:!!s.cached,error:s.error||null,source:s.mirror||null}})});
+  c.deals.forEach(dl=>out.push({...base,id:nid++,deal:dl.deal,price:dl.price,items:dl.items,category:'combo',days:dl.days,verified:true,source_url:dl.url,strength:dl.strength,note:'National price, participation may vary.'+(dl.note?' '+dl.note:'')+(dl.strength==='third-party'?' (Third-party source, not the chain itself.)':'')}))});
+ const all=[...local,...generic,...out].filter(ok).map(fin);
+ const msg=failed?'Still finding stores near you, refresh in a minute':null;
+ r.json({deals:all,stores:{count:s.list.length,radius_mi:Math.round(radius/MI),cached:!!s.cached,loading:failed,error:msg,message:msg,source:s.mirror||null}})});
 app.get('/api/catalog',(q,r)=>r.json(CAT));
 app.post('/api/deals',(q,r)=>{const b=q.body||{};const price=parseFloat(b.price);
  if(!b.restaurant||!b.deal||!(price>0)||!b.address)return r.status(400).json({error:'restaurant, deal, price, address required'});
