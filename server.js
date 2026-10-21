@@ -46,6 +46,13 @@ const link=(base,q,cfg)=>{let u=base.replace('{q}',encodeURIComponent(q));if(cfg
 function orderLinks(name,near){const c=BYN[norm(name)],o=[];if(c&&c.order)o.push({label:'Order on '+name.replace(/'s$|’s$/,"'s")+' site',url:link(c.order,'',LINKS.official),kind:'official'});
  const q=name+(near?' '+near:'');o.push({label:'DoorDash',url:link(LINKS.doordash.base,name,LINKS.doordash),kind:'doordash'},{label:'Uber Eats',url:link(LINKS.ubereats.base,q,LINKS.ubereats),kind:'ubereats'});return o}
 const app=express();app.use(express.json());require('./admin.js')(app,{DB,load,CU});app.use(express.static(path.join(__dirname,'public'),{extensions:['html']}));
+const PKEYS=Object.keys(PLACES).map(k=>({k,n:k.slice(0,k.lastIndexOf(',')),a:PLACES[k][2]||0})).sort((a,b)=>b.a-a.a),ZKEYS=Object.keys(ZIPS).sort();
+const title=k=>k.replace(/\b\w/g,c=>c.toUpperCase()).replace(/, (\w+)$/,(x,s)=>', '+s.toUpperCase());
+// autocomplete: Census places have no population in the bundle, so larger land area ranks first
+app.get('/api/places',(q,r)=>{const s=String(q.query.q||'').trim().toLowerCase().slice(0,60);if(!s)return r.json([]);
+ if(/^\d{1,5}$/.test(s))return r.json(ZKEYS.filter(z=>z.startsWith(s)).slice(0,8).map(z=>({label:z,value:z,type:'zip'})));
+ const m=s.match(/^(.+?),\s*([a-z ]*)$/),name=(m?m[1]:s).trim(),st=m?(ST[m[2].trim()]||m[2].trim()):'';
+ r.json(PKEYS.filter(p=>p.n.startsWith(name)&&(!st||p.k.slice(p.k.lastIndexOf(',')+2).startsWith(st))).sort((a,b)=>(b.n===name)-(a.n===name)).slice(0,8).map(p=>({label:title(p.k),value:title(p.k),type:'city'})))});
 app.get('/api/geocode',async(q,r)=>{const g=await geocode(q.query.q);g?r.json(g):r.status(404).json({error:'Could not find that US ZIP or city'})});
 const GENERIC=d=>/^Participating/.test(d.address||'');
 app.get('/api/deals',async(q,r)=>{const lat=parseFloat(q.query.lat),lng=parseFloat(q.query.lng),near=String(q.query.near||'').slice(0,60);let db=load();
