@@ -37,7 +37,7 @@ async function stores(lat,lng){const key=lat.toFixed(2)+'_'+lng.toFixed(2),f=pat
 const link=(base,q,cfg)=>{let u=base.replace('{q}',encodeURIComponent(q));if(cfg.affiliateParam&&cfg.affiliateId)u+=(u.includes('?')?'&':'?')+cfg.affiliateParam+'='+encodeURIComponent(cfg.affiliateId);return u};
 function orderLinks(name,near){const c=BYN[norm(name)],o=[];if(c&&c.order)o.push({label:'Order on '+name.replace(/'s$|’s$/,"'s")+' site',url:link(c.order,'',LINKS.official),kind:'official'});
  const q=name+(near?' '+near:'');o.push({label:'DoorDash',url:link(LINKS.doordash.base,name,LINKS.doordash),kind:'doordash'},{label:'Uber Eats',url:link(LINKS.ubereats.base,q,LINKS.ubereats),kind:'ubereats'});return o}
-const app=express();app.use(express.json());app.use(express.static(path.join(__dirname,'public'),{extensions:['html']}));
+const app=express();app.use(express.json());require('./admin.js')(app,{DB,load,CU});app.use(express.static(path.join(__dirname,'public'),{extensions:['html']}));
 app.get('/api/geocode',async(q,r)=>{const g=await geocode(q.query.q);g?r.json(g):r.status(404).json({error:'Could not find that US ZIP or city'})});
 app.get('/api/deals',async(q,r)=>{const lat=parseFloat(q.query.lat),lng=parseFloat(q.query.lng),near=String(q.query.near||'').slice(0,60);let db=load();
  if(!(lat&&lng))return r.json({deals:db.map(d=>({...pub(d),order:orderLinks(d.restaurant,near)}))});
@@ -59,4 +59,4 @@ app.post('/api/deals',(q,r)=>{const b=q.body||{};const price=parseFloat(b.price)
  const db=load();const d={id:Math.max(0,...db.map(x=>x.id))+1,restaurant:String(b.restaurant).slice(0,80),deal:String(b.deal).slice(0,200),price,items:Math.max(1,parseInt(b.items)||1),category:b.category||'daily',cuisine:(c=>c.length?c:['other'])([...new Set(String(b.cuisine||'').toLowerCase().split(/[,\s]+/).filter(c=>CU.includes(c)))].slice(0,3)),days:String(b.days||'').slice(0,80),address:String(b.address).slice(0,150),lat:parseFloat(b.lat)||null,lng:parseFloat(b.lng)||null,source:b.source==='restaurant'?'restaurant':'user',verified:false,submitted:new Date().toISOString(),note:b.source==='restaurant'?'Restaurant-posted, not yet reviewed':'Community submission, not yet reviewed'};
  if(b.contact_email)d.contact_email=String(b.contact_email).slice(0,120);if(b.owner)d.owner_confirmed=true;
  db.push(d);fs.writeFileSync(DB,JSON.stringify(db,null,1));const{contact_email,...pub}=d;r.status(201).json(pub);});
-app.listen(process.env.PORT||3000,()=>console.log('MealDeal on :'+(process.env.PORT||3000)));
+app.set('trust proxy',1);app.listen(process.env.PORT||3000,()=>console.log('MealDeal on :'+(process.env.PORT||3000)));
