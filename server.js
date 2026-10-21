@@ -53,7 +53,12 @@ async function stores(lat,lng){const key=lat.toFixed(2)+'_'+lng.toFixed(2),f=pat
 const link=(base,q,cfg)=>{let u=base.replace('{q}',encodeURIComponent(q));if(cfg.affiliateParam&&cfg.affiliateId)u+=(u.includes('?')?'&':'?')+cfg.affiliateParam+'='+encodeURIComponent(cfg.affiliateId);return u};
 function orderLinks(name,near){const c=BYN[norm(name)],o=[];if(c&&c.order)o.push({label:'Order on '+name.replace(/'s$|’s$/,"'s")+' site',url:link(c.order,'',LINKS.official),kind:'official'});
  const q=name+(near?' '+near:'');o.push({label:'DoorDash',url:link(LINKS.doordash.base,name,LINKS.doordash),kind:'doordash'},{label:'Uber Eats',url:link(LINKS.ubereats.base,q,LINKS.ubereats),kind:'ubereats'});return o}
-const app=express();app.use(express.json());require('./admin.js')(app,{DB,load,CU});app.use(express.static(path.join(__dirname,'public'),{extensions:['html']}));
+const MENU=require('./menuscan.js');
+async function overpassPost(q){const one=async u=>{const r=await fetch(u,{method:'POST',body:'data='+encodeURIComponent(q),headers:{'User-Agent':MENU.UA,'Content-Type':'application/x-www-form-urlencoded'},signal:AbortSignal.timeout(40000)});if(!r.ok)throw 0;const j=await r.json();if(j.remark&&/error|timed out/i.test(j.remark))throw 0;return j.elements};try{return await Promise.any(MIRRORS.map(one))}catch(e){return null}}
+const EXTRA_CHAINS=['kfc','tacobell','costavida','dickeys','dickeysbarbecuepit','mobettahs','betos','redwok','subway','starbucks','dutchbros','swigg','swig','crumbl','cafe rio','caferio','pandaexpress','littlecaesars','papajohns'].map(norm);
+const isChain=n=>String(n).split(/\s*[\/&+]\s*|\s+and\s+/i).concat(n).some(x=>!!BYN[norm(x)]||EXTRA_CHAINS.includes(norm(x)));
+const MDEPS={overpassPost,isChain},LOCAL_R=10*MI; // local spots: 10 mi of the city center
+const app=express();app.use(express.json());require('./admin.js')(app,{DB,load,CU,MENU});app.use(express.static(path.join(__dirname,'public'),{extensions:['html']}));
 const PKEYS=Object.keys(PLACES).map(k=>({k,n:k.slice(0,k.lastIndexOf(',')),a:PLACES[k][2]||0})).sort((a,b)=>b.a-a.a),ZKEYS=Object.keys(ZIPS).sort();
 const title=k=>k.replace(/\b\w/g,c=>c.toUpperCase()).replace(/, (\w+)$/,(x,s)=>', '+s.toUpperCase());
 // autocomplete: Census places have no population in the bundle, so larger land area ranks first
@@ -79,9 +84,13 @@ app.get('/api/deals',async(q,r)=>{const lat=parseFloat(q.query.lat),lng=parseFlo
   if(local.some(d=>d.restaurant===st.chain&&km([d.lat,d.lng],[st.lat,st.lng])<0.4))return; // hand-verified store wins
   const c=BYN[norm(st.chain)];const base={restaurant:c.name,address:st.address,lat:st.lat,lng:st.lng,cuisine:c.cuisine,store_url:st.osm,area:'national',checked:CAT.checked,source:'chain',national:true};
   c.deals.forEach(dl=>out.push({...base,id:nid++,deal:dl.deal,price:dl.price,items:dl.items,category:'combo',days:dl.days,verified:true,source_url:dl.url,strength:dl.strength,note:'National price, participation may vary.'+(dl.note?' '+dl.note:'')+(dl.strength==='third-party'?' (Third-party source, not the chain itself.)':'')}))});
- const all=[...local,...generic,...out].filter(ok).map(fin);
+ MENU.startArea(lat,lng,LOCAL_R,MDEPS); // background, never awaited
+ const menu=MENU.deals(lat,lng,LOCAL_R/1000).map(d=>({...d,order:[]}));
+ const all=[...local,...generic,...out].filter(ok).map(fin).concat(menu);
  const msg=failed?'Still finding stores near you, refresh in a minute':null;
- r.json({deals:all,stores:{count:s.list.length,radius_mi:Math.round(radius/MI),cached:!!s.cached,loading:failed,error:msg,message:msg,source:s.mirror||null}})});
+ r.json({deals:all,menus:MENU.status(lat,lng),stores:{count:s.list.length,radius_mi:Math.round(radius/MI),cached:!!s.cached,loading:failed,error:msg,message:msg,source:s.mirror||null}})});
+app.get('/api/menus/status',(q,r)=>{const la=parseFloat(q.query.lat),ln=parseFloat(q.query.lng);if(!isFinite(la)||!isFinite(ln))return r.status(400).json({error:'lat,lng required'});r.json(MENU.status(la,ln))});
+app.post('/api/menus/rescan',(q,r)=>{const b={...q.query,...(q.body||{})},la=parseFloat(b.lat),ln=parseFloat(b.lng);if(!isFinite(la)||!isFinite(ln))return r.status(400).json({error:'lat,lng required'});const o=MENU.rescan(la,ln,LOCAL_R,MDEPS);r.status(o.ok?202:429).json(o)});
 app.get('/api/catalog',(q,r)=>r.json(CAT));
 app.post('/api/deals',(q,r)=>{const b=q.body||{};const price=parseFloat(b.price);
  if(!b.restaurant||!b.deal||!(price>0)||!b.address)return r.status(400).json({error:'restaurant, deal, price, address required'});

@@ -1,0 +1,607 @@
+{
+ "pilot": "local-restaurants",
+ "area": "Tooele/Stansbury Park/Grantsville/Lake Point, UT",
+ "checked": "2026-10-21",
+ "live": false,
+ "excluded_chains": [
+  "KFC/Taco Bell",
+  "Costa Vida",
+  "Dickey's",
+  "Mo' Bettahs",
+  "Beto's",
+  "Bout Time Pub & Grub",
+  "Red Wok",
+  "Bonneville Brewery (4-store local brewpub, no prices on site)"
+ ],
+ "restaurants": [
+  {
+   "name": "Virg's Family Restaurant",
+   "type": "restaurant",
+   "cuisine": [
+    "american",
+    "mexican",
+    "breakfast"
+   ],
+   "address": "533 E Main St, Grantsville, UT 84029",
+   "lat": 40.59999,
+   "lng": -112.44091,
+   "website": "https://virgsfamilyrestaurant.com",
+   "menu_location": "own site (HTML)",
+   "menu_url": "https://virgsfamilyrestaurant.com/menu",
+   "price_status": "readable",
+   "meals": [
+    {
+     "item": "3 Ground Beef Tacos plate (rice & beans)",
+     "price": 9.99,
+     "items": 3,
+     "tags": [
+      "mexican"
+     ]
+    },
+    {
+     "item": "1 Pork Chop Dinner (Smaller Appetite)",
+     "price": 8.99,
+     "items": 1,
+     "tags": [
+      "american"
+     ]
+    },
+    {
+     "item": "1/2 Chicken Fried Steak (Smaller Appetite)",
+     "price": 8.99,
+     "items": 1,
+     "tags": [
+      "american"
+     ]
+    },
+    {
+     "item": "Combination Plate #1-#5 (rice & beans incl.)",
+     "price": 12.99,
+     "items": 3,
+     "tags": [
+      "mexican",
+      "combo"
+     ]
+    }
+   ],
+   "source": "osm",
+   "notes": "One menu page shared by Ogden/Erda/Grantsville/Taylorville; per-location prices not stated. OSM also has a 'Virg's' node in Tooele (40.53112,-112.29882) - unconfirmed.",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Rome Italian Restaurant and Bar",
+   "type": "restaurant",
+   "cuisine": [
+    "italian"
+   ],
+   "address": "83 N Main St, Tooele, UT 84074",
+   "lat": 40.53219,
+   "lng": -112.29884,
+   "website": "https://www.romeitalianrestaurant.com",
+   "menu_location": "own site (HTML)",
+   "menu_url": "https://www.romeitalianrestaurant.com/menu",
+   "price_status": "readable (starting prices only)",
+   "meals": [
+    {
+     "item": "Carbonara",
+     "price": 13.0,
+     "price_qualifier": "from",
+     "items": 1,
+     "tags": [
+      "italian",
+      "pasta"
+     ]
+    },
+    {
+     "item": "Spaghetti Meatballs",
+     "price": 13.0,
+     "price_qualifier": "from",
+     "items": 1,
+     "tags": [
+      "italian",
+      "pasta"
+     ]
+    },
+    {
+     "item": "Grilled Salmon sandwich",
+     "price": 13.0,
+     "price_qualifier": "from",
+     "items": 1,
+     "tags": [
+      "italian",
+      "sandwich"
+     ]
+    }
+   ],
+   "source": "osm",
+   "notes": "Lists a 'Lunch Special' and 'Today Special' with no price.",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "New Canton City",
+   "type": "restaurant",
+   "cuisine": [
+    "chinese"
+   ],
+   "address": "822 E Main St Ste 9, Grantsville, UT 84029",
+   "lat": null,
+   "lng": null,
+   "website": "https://www.cantoncityut.com",
+   "menu_location": "own site (ordering platform, Vercel bot check on curl)",
+   "menu_url": "https://www.cantoncityut.com/menu",
+   "price_status": "partial",
+   "meals": [
+    {
+     "item": "Family Dinner Deluxe for 2 (soup, cheese puffs, potstickers, egg rolls, ham fried rice + entrees)",
+     "price": 37.5,
+     "items": 5,
+     "serves": 2,
+     "tags": [
+      "chinese",
+      "combo",
+      "family"
+     ]
+    }
+   ],
+   "source": "web",
+   "notes": "Only family-dinner prices rendered; individual entree prices load via JS.",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Tacos Tooele",
+   "type": "restaurant",
+   "cuisine": [
+    "mexican"
+   ],
+   "address": "515 N Main St, Tooele, UT 84074",
+   "lat": null,
+   "lng": null,
+   "website": "https://tacostooeletooele.com",
+   "menu_location": "own ordering site (JS)",
+   "menu_url": "https://tacostooeletooele.com/tacos-tooele/menu/",
+   "price_status": "unreadable",
+   "meals": [],
+   "source": "web",
+   "notes": "Search snippet showed $2.10 tacos / $5.25 plates but page returned 500/blank to fetch; not recorded as verified.",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Bombay Kitchen",
+   "type": "restaurant",
+   "cuisine": [
+    "indian"
+   ],
+   "address": "1193 N Main St #A, Tooele, UT 84074",
+   "lat": null,
+   "lng": null,
+   "website": "https://bombay-kitchen.com",
+   "menu_location": "own site (JS-rendered)",
+   "menu_url": "https://bombay-kitchen.com/menu-restaurant/",
+   "price_status": "unreadable",
+   "meals": [],
+   "source": "web",
+   "notes": "Prices only via JS; search snippet $3.95-$20.95.",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Spiro's All Day Diner",
+   "type": "restaurant",
+   "cuisine": [
+    "american",
+    "diner",
+    "breakfast"
+   ],
+   "address": "281 N Main St, Tooele, UT 84074",
+   "lat": 40.53579,
+   "lng": -112.29895,
+   "website": "https://spirosalldaydiner.com",
+   "menu_location": "own site",
+   "menu_url": "https://spirosalldaydiner.com/lunch-dinner/",
+   "price_status": "no prices online",
+   "meals": [],
+   "source": "web",
+   "notes": "Appears to occupy the former Jim's Family Restaurant address (OSM still says Jim's); menu lists items without prices. Third-party grubbio pages for Jim's are stale.",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Thai House",
+   "type": "restaurant",
+   "cuisine": [
+    "thai"
+   ],
+   "address": "297 N Main St, Tooele, UT 84074",
+   "lat": 40.53601,
+   "lng": -112.29963,
+   "website": "https://www.thaihousetooele.com",
+   "menu_location": "own ordering site (JS, Vercel bot check)",
+   "menu_url": "https://www.thaihousetooele.com/",
+   "price_status": "unreadable",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Hunan Village",
+   "type": "restaurant",
+   "cuisine": [
+    "chinese"
+   ],
+   "address": "229 N Main St, Tooele, UT 84074",
+   "lat": 40.53523,
+   "lng": -112.29957,
+   "website": "https://hunanvillage.top",
+   "menu_location": "own site + online-order link",
+   "menu_url": "https://hunanvillage.top",
+   "price_status": "unreadable",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Mumbai House",
+   "type": "restaurant",
+   "cuisine": [
+    "indian"
+   ],
+   "address": "778 N Main St, Tooele, UT 84074",
+   "lat": 40.54544,
+   "lng": -112.29627,
+   "website": "https://mumbaihousecuisine.com",
+   "menu_location": "own site (small local multi-location)",
+   "menu_url": "https://mumbaihousecuisine.com",
+   "price_status": "unreadable",
+   "meals": [],
+   "source": "osm",
+   "notes": "Tooele listed as location; no prices on home page.",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Vista Linda",
+   "type": "restaurant",
+   "cuisine": [
+    "mexican"
+   ],
+   "address": "21 E Vine St, Tooele, UT 84074",
+   "lat": 40.53076,
+   "lng": -112.29784,
+   "website": "https://vista-linda.menustic.com",
+   "menu_location": "third-party menu host (menustic, Cloudflare bot check)",
+   "menu_url": "https://vista-linda.menustic.com",
+   "price_status": "unreadable",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Bobas and Crepes",
+   "type": "restaurant",
+   "cuisine": [
+    "dessert"
+   ],
+   "address": "23 E Vine St, Tooele, UT 84074",
+   "lat": 40.53076,
+   "lng": -112.29777,
+   "website": "https://bobascrepes.square.site",
+   "menu_location": "Square Online (JS)",
+   "menu_url": "https://bobascrepes.square.site",
+   "price_status": "unreadable",
+   "meals": [],
+   "source": "osm",
+   "notes": "Dessert, not a full meal.",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Delicious Antojitos",
+   "type": "restaurant",
+   "cuisine": [
+    "dessert",
+    "mexican"
+   ],
+   "address": "25 E Vine St, Tooele, UT 84074",
+   "lat": 40.53076,
+   "lng": -112.29772,
+   "website": "http://orderdeliciousantojitos.mobile-webview7.com",
+   "menu_location": "ordering web-view (JS)",
+   "menu_url": "http://orderdeliciousantojitos.mobile-webview7.com",
+   "price_status": "not checked",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Nigh-Time Donuts",
+   "type": "fast_food",
+   "cuisine": [
+    "donut"
+   ],
+   "address": "299 N Main St, Tooele, UT 84074",
+   "lat": 40.53613,
+   "lng": -112.29958,
+   "website": "https://www.nightimedonutsut.com",
+   "menu_location": "own site (Vercel bot check)",
+   "menu_url": "https://www.nightimedonutsut.com",
+   "price_status": "unreadable",
+   "meals": [],
+   "source": "osm",
+   "notes": "Not a full meal.",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "American Burgers (Tooele)",
+   "type": "fast_food",
+   "cuisine": [
+    "burger",
+    "greek"
+   ],
+   "address": "490 N Main St, Tooele, UT 84074",
+   "lat": 40.54036,
+   "lng": -112.29789,
+   "website": "https://american-burgers.com",
+   "menu_location": "own site (blank to fetch)",
+   "menu_url": "https://american-burgers.com",
+   "price_status": "unreadable",
+   "meals": [],
+   "source": "osm",
+   "notes": "Small local 2-store group.",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "American Burgers (Grantsville)",
+   "type": "restaurant",
+   "cuisine": [
+    "burger",
+    "greek"
+   ],
+   "address": "307 E Main St, Grantsville, UT 84029",
+   "lat": 40.60009,
+   "lng": -112.45274,
+   "website": "https://american-burgers.com",
+   "menu_location": "own site (blank to fetch)",
+   "menu_url": "https://american-burgers.com",
+   "price_status": "unreadable",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Chubby's Cafe",
+   "type": "fast_food",
+   "cuisine": [
+    "burger"
+   ],
+   "address": "1211 N Main St, Tooele, UT 84074",
+   "lat": 40.55555,
+   "lng": -112.29785,
+   "website": "https://chubbyscafe.com",
+   "menu_location": "own site -> per-location order pages",
+   "menu_url": "https://chubbyscafe.com",
+   "price_status": "not checked",
+   "meals": [],
+   "source": "osm",
+   "notes": "Utah regional chain (~11 stores); borderline 'local'.",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Los Charritos Mexican Food",
+   "type": "restaurant",
+   "cuisine": [
+    "mexican"
+   ],
+   "address": "822 E Main St, Grantsville, UT 84029",
+   "lat": null,
+   "lng": null,
+   "website": "https://loscharritosmexicanfoodut.com",
+   "menu_location": "own site with Order Online link",
+   "menu_url": "https://loscharritosmexicanfoodut.com",
+   "price_status": "unreadable",
+   "meals": [],
+   "source": "web",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "The Outpost",
+   "type": "restaurant",
+   "cuisine": [
+    "american",
+    "breakfast"
+   ],
+   "address": "58 W Main St, Grantsville, UT 84029",
+   "lat": null,
+   "lng": null,
+   "website": null,
+   "menu_location": "aggregator only",
+   "menu_url": "https://www.roostcafeandbistro.com/the-outpost-84029/",
+   "price_status": "no prices online",
+   "meals": [],
+   "source": "web",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Hometown Pizza",
+   "type": "restaurant",
+   "cuisine": [
+    "pizza"
+   ],
+   "address": "230 E Main St, Grantsville, UT 84029",
+   "lat": null,
+   "lng": null,
+   "website": null,
+   "menu_location": "none found",
+   "menu_url": "",
+   "price_status": "no menu found",
+   "meals": [],
+   "source": "web",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Osaka Sushi",
+   "type": "restaurant",
+   "cuisine": [
+    "japanese"
+   ],
+   "address": null,
+   "lat": 40.55,
+   "lng": -112.2962,
+   "website": null,
+   "menu_location": "no website in OSM; not searched",
+   "menu_url": "",
+   "price_status": "not checked",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Janna's Java",
+   "type": "cafe",
+   "cuisine": [
+    "coffee"
+   ],
+   "address": null,
+   "lat": 40.53866,
+   "lng": -112.29812,
+   "website": null,
+   "menu_location": "no website in OSM; not searched",
+   "menu_url": "",
+   "price_status": "not checked",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Apollo Burgers",
+   "type": "fast_food",
+   "cuisine": [
+    "burger"
+   ],
+   "address": null,
+   "lat": 40.55705,
+   "lng": -112.29679,
+   "website": null,
+   "menu_location": "no website in OSM; not searched",
+   "menu_url": "",
+   "price_status": "not checked",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "La Frontera",
+   "type": "restaurant",
+   "cuisine": [
+    "mexican"
+   ],
+   "address": null,
+   "lat": 40.52096,
+   "lng": -112.29923,
+   "website": null,
+   "menu_location": "no website in OSM; not searched",
+   "menu_url": "",
+   "price_status": "not checked",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "La Fountain Mexican",
+   "type": "restaurant",
+   "cuisine": [
+    "mexican"
+   ],
+   "address": null,
+   "lat": 40.55831,
+   "lng": -112.29749,
+   "website": null,
+   "menu_location": "no website in OSM; not searched",
+   "menu_url": "",
+   "price_status": "not checked",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Charrito's Mexican",
+   "type": "restaurant",
+   "cuisine": [
+    "mexican"
+   ],
+   "address": null,
+   "lat": 40.55348,
+   "lng": -112.2972,
+   "website": null,
+   "menu_location": "no website in OSM; not searched",
+   "menu_url": "",
+   "price_status": "not checked",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Beans & Brews",
+   "type": "cafe",
+   "cuisine": [
+    "coffee"
+   ],
+   "address": null,
+   "lat": 40.57324,
+   "lng": -112.29743,
+   "website": null,
+   "menu_location": "no website in OSM; not searched",
+   "menu_url": "",
+   "price_status": "not checked",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Dairy Delight",
+   "type": "fast_food",
+   "cuisine": [
+    "burger"
+   ],
+   "address": null,
+   "lat": 40.52884,
+   "lng": -112.29987,
+   "website": null,
+   "menu_location": "no website in OSM; not searched",
+   "menu_url": "",
+   "price_status": "not checked",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  },
+  {
+   "name": "Java Bean",
+   "type": "cafe",
+   "cuisine": [
+    "coffee"
+   ],
+   "address": null,
+   "lat": 40.60023,
+   "lng": -112.45637,
+   "website": null,
+   "menu_location": "no website in OSM; not searched",
+   "menu_url": "",
+   "price_status": "not checked",
+   "meals": [],
+   "source": "osm",
+   "notes": "",
+   "checked": "2026-10-21"
+  }
+ ]
+}

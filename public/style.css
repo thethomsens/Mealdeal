@@ -81,3 +81,5 @@ footer{max-width:640px;margin:auto;padding:8px 16px 24px;text-align:center}
 #acl li{display:flex;justify-content:space-between;align-items:center;gap:8px;border:0;margin:0;padding:12px;border-radius:8px;cursor:pointer;min-height:44px}
 #acl li small{color:var(--mute);font-size:.75rem}
 #acl li[aria-selected=true],#acl li:hover{background:var(--brand-t)}
+
+.tag.menu{background:#e8f0fb;color:#1d4f91}.tag.spc{background:#fff1e6;color:#a2440f}#menumsg button{margin-left:8px;font-size:.8rem;padding:2px 10px}

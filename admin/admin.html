@@ -3,11 +3,11 @@
 <header><h1>🍔 MealDeal <small>admin</small></h1><p>Review submitted deals before they go public.</p><nav><a href="/">← Site</a> · <a href="#" id="out" hidden>Sign out</a></nav></header>
 <main>
 <form id="login" class="card" hidden><h2>Sign in</h2><input name="key" type="password" placeholder="Admin password" autocomplete="current-password" required><button>Sign in</button><div id="lmsg" class="muted"></div></form>
-<div id="app" hidden><div class="tabs"><button id="tp" class="on">Pending <span id="np"></span></button><button id="ta">Approved <span id="na"></span></button></div><div id="msg" class="muted"></div><div id="list"></div></div>
+<div id="app" hidden><div class="tabs"><button id="tp" class="on">Pending <span id="np"></span></button><button id="ta">Approved <span id="na"></span></button><button id="tm">Menu checks <span id="nm"></span></button></div><div id="msg" class="muted"></div><div id="list"></div></div>
 </main>
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
-let data={pending:[],approved:[],cuisines:[]},tab='pending';
+let data={pending:[],approved:[],cuisines:[]},menus=[],tab='pending';
 const api=async(u,b)=>{const r=await fetch('/api/admin/'+u,{method:b?'POST':'GET',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:b&&JSON.stringify(b)});const j=await r.json().catch(()=>({}));if(r.status===401&&u!=='login'){show(false)}if(!r.ok)throw j.error||('Error '+r.status);return j};
 function show(on){$('#login').hidden=on;$('#app').hidden=!on;$('#out').hidden=!on}
 const F=['restaurant','deal','price','items','cuisine','days','address','source_url','note'];
@@ -20,14 +20,16 @@ return `<div class="card ad" data-id="${d.id}"><div class="top"><span>${esc(d.re
 <label>Days / times<input name="days" value="${esc(d.days)}"></label><label>Address<input name="address" value="${esc(d.address)}"></label>
 <label>Source URL<input name="source_url" type="url" placeholder="https://…" value="${esc(d.source_url)}"></label><label>Note<input name="note" value="${esc(d.note)}"></label>
 <div class="row">${pend?'<button class="ok" data-a="approve">✅ Approve</button><button data-a="edit">💾 Save edits</button><button class="no" data-a="reject">🗑 Reject</button>':'<button data-a="edit">💾 Save edits</button><button class="no" data-a="unverify">↩ Unverify</button>'}</div></div>`}
-function render(){$('#np').textContent='('+data.pending.length+')';$('#na').textContent='('+data.approved.length+')';$('#tp').className=tab==='pending'?'on':'';$('#ta').className=tab==='approved'?'on':'';
+function mcard(r){return `<div class="card ad"><div class="top"><span>${esc(r.name)}</span><span class="muted">${esc(r.status)}</span></div><div class="kv">${esc(r.address)} · checked ${esc(r.checked.slice(0,10))} · <a href="${esc(r.website)}" target="_blank" rel="noopener">site</a>${r.reason?' · <b>skipped:</b> '+esc(r.reason):''}</div>
+${(r.items||[]).map(i=>`<div class="row" style="align-items:center"><span style="flex:3">${i.hidden?'<s>':''}${esc(i.name)} — $${(+i.price).toFixed(2)}${i.hidden?'</s>':''} <small class="muted">${esc(i.method)}${i.special?' · special':''}${i.stale?' · older than 60 days (hidden)':''} · <a href="${esc(i.menu_url)}" target="_blank" rel="noopener">menu</a></small></span><button data-m="${esc(r.id)}" data-k="${esc(i.key)}" data-h="${i.hidden?0:1}" class="${i.hidden?'ok':'no'}">${i.hidden?'Restore':'Unverify'}</button></div>`).join('')}</div>`}
+function render(){$('#tm').className=tab==='menus'?'on':'';$('#nm').textContent='('+menus.reduce((n,r)=>n+(r.items||[]).length,0)+')';if(tab==='menus'){$('#np').textContent='('+data.pending.length+')';$('#na').textContent='('+data.approved.length+')';$('#tp').className=$('#ta').className='';$('#list').innerHTML=menus.length?menus.map(mcard).join(''):'<p class="muted">No menus checked yet.</p>';return}$('#np').textContent='('+data.pending.length+')';$('#na').textContent='('+data.approved.length+')';$('#tp').className=tab==='pending'?'on':'';$('#ta').className=tab==='approved'?'on':'';
 const l=data[tab];$('#list').innerHTML=l.length?l.map(card).join(''):'<p class="muted">Nothing here.</p>'}
-async function refresh(){data=await api('items');render()}
-$('#list').onclick=async e=>{const a=e.target.dataset.a;if(!a)return;const c=e.target.closest('.card'),id=c.dataset.id;
+async function refresh(){data=await api('items');menus=await api('menus').catch(()=>[]);render()}
+$('#list').onclick=async e=>{if(e.target.dataset.m){try{await api('menus/hide',{id:e.target.dataset.m,key:e.target.dataset.k,hidden:e.target.dataset.h==='1'});$('#msg').textContent=e.target.dataset.h==='1'?'Hidden from the public site':'Restored';await refresh()}catch(x){$('#msg').textContent='Error: '+x}return}const a=e.target.dataset.a;if(!a)return;const c=e.target.closest('.card'),id=c.dataset.id;
  if(a==='reject'&&!confirm('Reject and delete this submission?'))return;if(a==='unverify'&&!confirm('Hide this deal from the public site?'))return;
  const b={};c.querySelectorAll('input').forEach(i=>b[i.name]=i.value);
  try{await api('items/'+id+'/'+a,a==='approve'||a==='edit'?b:{});$('#msg').textContent={approve:'Approved ✅',edit:'Saved',reject:'Rejected',unverify:'Moved back to pending'}[a];await refresh()}catch(x){$('#msg').textContent='Error: '+x}};
-$('#tp').onclick=()=>{tab='pending';render()};$('#ta').onclick=()=>{tab='approved';render()};
+$('#tp').onclick=()=>{tab='pending';render()};$('#ta').onclick=()=>{tab='approved';render()};$('#tm').onclick=()=>{tab='menus';render()};
 $('#login').onsubmit=async e=>{e.preventDefault();try{await api('login',{key:e.target.key.value});e.target.reset();$('#lmsg').textContent='';show(true);refresh()}catch(x){$('#lmsg').textContent=x}};
 $('#out').onclick=async e=>{e.preventDefault();await api('logout',{}).catch(()=>{});show(false)};
 api('me').then(()=>{show(true);refresh()}).catch(()=>show(false));

@@ -1,6 +1,6 @@
 // MealDeal moderation (/admin). Disabled entirely unless ADMIN_KEY is set.
 const crypto=require('crypto'),fs=require('fs'),path=require('path');
-module.exports=function(app,{DB,load,CU}){
+module.exports=function(app,{DB,load,CU,MENU}){
  const KEY=process.env.ADMIN_KEY||'';const ON=KEY.length>0;
  const save=db=>fs.writeFileSync(DB,JSON.stringify(db,null,1));
  const h=s=>crypto.createHash('sha256').update(String(s)).digest();
@@ -40,4 +40,7 @@ module.exports=function(app,{DB,load,CU}){
  app.post('/api/admin/items/:id/edit',act((db,i,b)=>{Object.assign(db[i],clean(b,db[i]))}));
  app.post('/api/admin/items/:id/reject',act((db,i)=>{const d=db.splice(i,1)[0];return{removed:d.id}}));
  app.post('/api/admin/items/:id/unverify',act((db,i)=>{const d=db[i];d.verified=false;d.status='pending';delete d.verified_by;if(!d.submitted)d.submitted=new Date().toISOString()}));
+ // auto-checked menu prices: list, unverify (hide) or restore
+ app.get('/api/admin/menus',(q,r)=>r.json(MENU?MENU.adminList():[]));
+ app.post('/api/admin/menus/hide',(q,r)=>{const b=q.body||{};MENU&&MENU.setHidden(String(b.id),b.key,b.hidden!==false)?r.json({ok:true}):r.status(404).json({error:'Not found'})});
 };
